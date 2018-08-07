@@ -12,7 +12,8 @@ public interface IEmployeeServ {
 	public List<Employee> dispEmp(Employee emp) throws EmployeeException;
 	public boolean applyLeave() throws EmployeeException;
 	public boolean approveLeave() throws EmployeeException; 
-	public Employee searchEmpByName(String empName) throws EmployeeException;
+	public List<Employee> searchEmpByFName(String empFName) throws EmployeeException;
+	public List<Employee> searchEmpByLName(String empLName) throws EmployeeException;
 	public Employee searchEmpById(String empId) throws EmployeeException;
 	public Employee searchEmpByDept(String dept) throws EmployeeException;
 	public Employee searchEmpByGrade(String grade) throws EmployeeException;

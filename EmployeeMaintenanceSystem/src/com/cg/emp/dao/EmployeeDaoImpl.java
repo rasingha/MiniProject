@@ -59,10 +59,16 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 	}
 
 	@Override
-	public Employee searchEmpByName(String empName) throws EmployeeException{
+	public List<Employee> searchEmpByFName(String empFName) throws EmployeeException{
 		
 		return null;
 	}
+	
+	public List<Employee> searchEmpByLName(String empLName) throws EmployeeException{
+		
+		return null;
+	}
+
 
 	@Override
 	public Employee searchEmpById(String empId) throws EmployeeException {

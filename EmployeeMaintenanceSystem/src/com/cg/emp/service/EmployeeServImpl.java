@@ -41,9 +41,14 @@ public class EmployeeServImpl implements IEmployeeServ {
 	}
 
 
-	public Employee searchEmpByName(String empName) throws EmployeeException {
+	public List<Employee> searchEmpByFName(String empFName) throws EmployeeException {
 		empDao=new EmployeeDaoImpl();
-		return empDao.searchEmpByName(empName);
+		return empDao.searchEmpByFName(empFName);
+	}
+	
+	public List<Employee> searchEmpByLName(String empLName) throws EmployeeException {
+		empDao=new EmployeeDaoImpl();
+		return empDao.searchEmpByLName(empLName);
 	}
 
 

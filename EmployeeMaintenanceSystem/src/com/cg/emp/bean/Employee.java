@@ -16,6 +16,8 @@ public class Employee {
 	private String empAddress;
 	private String empContact;
 	private String empMgrId;
+	private Department dept_name;
+	
 	public String getEmpId() {
 		return empId;
 	}
@@ -100,13 +102,24 @@ public class Employee {
 	public void setEmpMgrId(String empMgrId) {
 		this.empMgrId = empMgrId;
 	}
+	
+	
+	public Department getDept_name() {
+		return dept_name;
+	}
+	public void setDept_name(Department dept_name) {
+		this.dept_name = dept_name;
+	}
 	@Override
 	public String toString() {
 		return "Employee [empId=" + empId + ", empFName=" + empFName + ", empLName=" + empLName + ", empDOB=" + empDOB
 				+ ", empDOJ=" + empDOJ + ", empDeptId=" + empDeptId + ", empGrade=" + empGrade + ", empDesign="
 				+ empDesign + ", empBasic=" + empBasic + ", empGender=" + empGender + ", empMStatus=" + empMStatus
-				+ ", empAddress=" + empAddress + ", empContact=" + empContact + ", empMgrId=" + empMgrId + "]";
+				+ ", empAddress=" + empAddress + ", empContact=" + empContact + ", empMgrId=" + empMgrId
+				+ ", dept_name=" + dept_name + "]";
 	}
+	
+	
 	
 
 }
