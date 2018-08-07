@@ -1,0 +1,95 @@
+create table User_Master(
+UserId varchar2(6),
+UserName varchar2(15),
+UserPassword varchar2(50),
+UserType varchar2(10));
+
+
+create table Department(
+Dept_ID number,
+Dept_Name varchar2(50));
+
+
+insert into Department values(101,'Finance');
+insert into Department values(101,'FS');
+insert into Department values(102,'NonFs');
+insert into Department values(103,'BU');
+insert into Department values(104,'xyz');
+
+
+
+create table Employee(
+Emp_ID varchar2(6) primary key,
+Emp_First_Name varchar2(25),
+Emp_Last_Name varchar2(25), 
+Emp_Date_of_Birth DATE, 
+Emp_Date_of_Joining DATE, 
+Emp_Dept_ID number, 
+Emp_Grade varchar2(2), 
+Emp_Designation varchar2(50), 
+Emp_Basic number, 
+Emp_Gender varchar2(1), 
+Emp_Marital_Status varchar2(1), 
+Emp_Home_Address varchar2(100), 
+Emp_Contact_Num varchar2(15), 
+Mgr_Id varchar2(6),
+foreign key(Mgr_Id) references employee(emp_ID));
+
+create sequence emp_seq start with 1;
+
+
+insert into Employee values('M15454','Tanmay','Acharya','03MAR14','13JUN18',101,'M1','Senior Manager','50000','M','Y','16/200, Mumbai','8845464363','M15454');
+insert into Employee values('E15323','Meghana','Patil','03MAR14','13Jun18',101,'M1','Analyst','24000','F','N','Ichalkaranji','8857994363','M15454');
+insert into Employee values('E15450','Minaj','Shaikh','03JUL14','13JAN18',103,'M2','Senior Analyst','55000','M','Y','Pune','8444464363','M15454');
+insert into Employee values('E15451','Pragathi','B','03JUL14','13JAN18',102,'M2','Senior Analyst','55000','M','Y','Pune','8444464363','M15454');
+insert into Employee values('E15452','Gyan','Shree','03JUL14','13JAN18',102,'M2','Senior Analyst','55000','M','Y','Pune','8444464363','M15454');
+insert into Employee values('E15333','Meghana','Jadhav','03APR14','13JUL18',103,'M2','Analyst','24000','F','N','Kolkata','8852224363','M15454');
+
+
+select e.Emp_ID, e.Emp_First_Name, e.Emp_Last_Name, 
+e.Emp_Date_of_Birth, e.Emp_Date_of_Joining, 
+e.Emp_Dept_ID, e.Emp_Grade, 
+e.Emp_Designation, e.Emp_Basic, e.Emp_Gender, 
+e.Emp_Marital_Status, e.Emp_Home_Address, e.Emp_Contact_Num, 
+e.Mgr_Id  from Employee e inner join Department d 
+on e.Emp_Dept_ID=d.Dept_ID 
+where Emp_First_Name = ?;
+
+
+
+
+
+
+
+
+create table Grade_Master(
+Grade_Code varchar2(2),
+Description varchar2(10), 
+Min_Salary number, 
+Max_Salary number);
+
+
+
+
+create table Leave_History(
+Leave_Id number,
+emp_id varchar2(6),
+leave_balance number check (leave_balance>=0), 
+noofdays_applied number, 
+date_from date, 
+date_to date, 
+status varchar2(20) CHECK (status in ('applied', 'approved', 'rejected')),
+foreign key(Emp_id) references Employee(Emp_id));
+
+
+create sequence seq_leave_id start with 1;
+
+
+
+
+
+create table LeaveMaster(
+emp_id varchar2(6),
+emp_name varchar2(50),
+LeavesLeft number,
+foreign key(emp_id) references Employee(Emp_id));
