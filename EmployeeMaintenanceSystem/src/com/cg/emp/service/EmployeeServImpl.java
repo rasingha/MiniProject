@@ -1,8 +1,10 @@
 package com.cg.emp.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.cg.emp.bean.Employee;
+import com.cg.emp.bean.User;
 import com.cg.emp.dao.EmployeeDaoImpl;
 import com.cg.emp.dao.IEmployeeDao;
 import com.cg.emp.exception.EmployeeException;
@@ -10,6 +12,22 @@ import com.cg.emp.exception.EmployeeException;
 public class EmployeeServImpl implements IEmployeeServ {
 	
 	IEmployeeDao empDao=null;
+	
+	public boolean isValid(User user) throws EmployeeException {
+		
+		IEmployeeDao iEmployeeDao=new EmployeeDaoImpl();
+		HashMap<String, String> h1=iEmployeeDao.getData();
+		if(h1.containsKey(user.getUserId())) {
+			if(user.getUserPassword().equals(h1.get(user.getUserId()))) {
+				return true;
+			}
+			else
+				throw new EmployeeException("Invalid Credentials");
+		}
+		return false;
+			
+	}
+	
 	@Override
 	public String addEmp() throws EmployeeException {
 		empDao=new EmployeeDaoImpl();
@@ -73,5 +91,7 @@ public class EmployeeServImpl implements IEmployeeServ {
 		empDao=new EmployeeDaoImpl();
 		return empDao.searchEmpByMS(ms);
 	}
+
+	
 
 }

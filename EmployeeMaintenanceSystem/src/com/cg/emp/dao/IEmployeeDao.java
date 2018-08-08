@@ -1,11 +1,14 @@
 package com.cg.emp.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.cg.emp.bean.Employee;
 import com.cg.emp.exception.*;
 
 public interface IEmployeeDao {
+	
+	public HashMap<String, String> getData() throws EmployeeException;
 	public String addEmp() throws EmployeeException;
 	public String modifyEmp() throws EmployeeException;
 	public List<Employee> dispEmp(Employee emp) throws EmployeeException;
