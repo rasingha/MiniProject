@@ -37,7 +37,7 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 				ps=con.prepareStatement(QueryMapper.GET_USER);
 				ResultSet rs=ps.executeQuery();
 				while(rs.next()) {
-					h.put(rs.getString("userId"), rs.getString("userPassword"));
+					h.put(rs.getString("userName"), rs.getString("userPassword"));
 				}
 				return h;
 			} catch (SQLException e) {

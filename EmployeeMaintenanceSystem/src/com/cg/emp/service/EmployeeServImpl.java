@@ -17,8 +17,8 @@ public class EmployeeServImpl implements IEmployeeServ {
 		
 		IEmployeeDao iEmployeeDao=new EmployeeDaoImpl();
 		HashMap<String, String> h1=iEmployeeDao.getData();
-		if(h1.containsKey(user.getUserId())) {
-			if(user.getUserPassword().equals(h1.get(user.getUserId()))) {
+		if(h1.containsKey(user.getUserName())) {
+			if(user.getUserPassword().equals(h1.get(user.getUserName()))) {
 				return true;
 			}
 			else

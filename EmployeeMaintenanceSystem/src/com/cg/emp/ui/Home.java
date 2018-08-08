@@ -25,12 +25,12 @@ public class Home {
 			System.out.println("*************Welcome to Capgemini Portal*************");
 			System.out.println("\n");
 			System.out.println("  LOGIN ");
-			System.out.println("UserID: ");
-			user.setUserId(sc.next());	
+			System.out.println("UserName: ");
+			user.setUserName(sc.next());	
 			System.out.println("Password: ");				
 			user.setUserPassword(sc.next());
 			
-			if(user.getUserId().equals("admin")&&user.getUserPassword().equals("admin"))
+			if(user.getUserName().equals("admin")&&user.getUserPassword().equals("admin"))
 			{
 				System.out.println("*******For Admin********");
 					
