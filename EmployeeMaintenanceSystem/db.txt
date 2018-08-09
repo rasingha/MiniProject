@@ -73,13 +73,13 @@ Max_Salary number);
 
 create table Leave_History(
 Leave_Id number,
-emp_id varchar2(6),
+emp_id varchar2(6) references Employee(Emp_id));
 leave_balance number check (leave_balance>=0), 
 noofdays_applied number, 
 date_from date, 
 date_to date, 
 status varchar2(20) CHECK (status in ('applied', 'approved', 'rejected')),
-foreign key(Emp_id) references Employee(Emp_id));
+
 
 
 create sequence seq_leave_id start with 1;
