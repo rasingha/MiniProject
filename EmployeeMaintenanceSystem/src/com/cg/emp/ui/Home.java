@@ -1,12 +1,17 @@
 package com.cg.emp.ui;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.cg.emp.bean.Employee;
+import com.cg.emp.bean.LeaveHistory;
 import com.cg.emp.bean.User;
 import com.cg.emp.exception.EmployeeException;
 import com.cg.emp.service.EmployeeServImpl;
@@ -18,6 +23,13 @@ public class Home {
 	static int adminChoice=0;
 	static String eid, fname, lname, dept, grade, ms;
 	static User user=null;
+	static Scanner sc=new Scanner(System.in);
+	static IEmployeeServ empServ=null;
+	static LeaveHistory lh=null;
+	static Employee emp=null;
+	static Logger logger = Logger.getRootLogger();
+	static List<Employee> leavesList =null;
+	static int choice=0;
 	public static void main(String[] args) 
 	{
 		
@@ -77,9 +89,11 @@ public class Home {
 						int empCh=sc.nextInt();
 						switch(empCh) {
 						
-							case 1: searchEmployee();	
+							case 1:
+								searchEmployee();	
 									break;
-							case 2: applyforLeave();
+							case 2:
+								applyforLeave();
 									break;
 						}
 							
@@ -103,9 +117,11 @@ public class Home {
 						int mgrChoice=sc.nextInt();
 						switch(mgrChoice) {
 						
-							case 1: leaveApproval();
+							case 1: 
+								leaveApproval();
 									break;
-							case 2: searchEmployee();
+							case 2: 
+								searchEmployee();
 									break;
 						}
 				
@@ -120,7 +136,43 @@ public class Home {
 
 	/*****************Functionalities of Employee****************************/
 	private static void applyforLeave() {
-		// TODO Auto-generated method stub
+		empServ=new EmployeeServImpl();
+		emp=new Employee();
+		lh=new LeaveHistory();
+		while(true) {
+		System.out.println("\t\t\t\t\t---------Leave Application----------");
+		System.out.println("Employee ID:");
+		emp.setEmpId(sc.next());
+		System.out.println("Employee Full Name:");
+		emp.setEmpFullName(sc.next());
+		System.out.println("Leave Balance:");
+		lh.setLeave_bal(sc.nextInt());
+		System.out.println("Leave from(dd/mm/yyyy):");
+		lh.setDate_from(sc.next());
+		System.out.println("Leave upto(dd/mm/yyyy):");
+		lh.setDate_to(sc.next());
+		System.out.println("Number Of Days");
+		lh.setNoofdays_App(sc.nextInt());
+		try {
+		if(empServ.validateCustomer(emp,lh)){
+			String leave_id=empServ.applyLeave(emp,lh);
+				if(leave_id != null)
+				{
+					System.out.println("\nLeave applied successfully with leave Id "+leave_id+"\nWait for the Approval..");
+				break;
+				}
+				else {
+					System.out.println("Problem occured.Check Log file or console");
+				}
+			} 
+		else {
+			System.err.println("Please enter details in valid format, Try again");
+		}}
+		catch (EmployeeException e) {
+			logger.error("exception occured",e);
+			System.out.println("ERROR : "+ e.getMessage());
+		}
+		}
 		
 	}
 
@@ -292,10 +344,98 @@ public class Home {
 	/*******End Of Functionality of Employee***********/
 		
 
-	/******Functionality of Manager*****************/
+	/******Functionality of Manager(Leave Approval)*****************/
 	private static void leaveApproval() {
-		// TODO Auto-generated method stub
+		empServ=new EmployeeServImpl();
+		emp=new Employee();
+		lh=new LeaveHistory();
+		leavesList = new ArrayList<Employee>();
+		String result = null;
+		String result1 = null;
+		try {
+			leavesList = empServ.getLeavesList(emp);
+			if (leavesList != null) {
+				Iterator<Employee> i = leavesList.iterator();
+				System.out.println("\n\tLeave Requests:-");
+				System.out.println("\t-----------------\n");
+				System.out.format("%10s%19s%20s%25s%15s%15s%15s\n", "LEAVE ID", "EMP ID", "LEAVE BALANCE",
+						"NO OF DAYS APPLIED", "DATE_FROM", "DATE_TO", "STATUS");
+				while (i.hasNext()) {
+
+					Employee e = (Employee) i.next();
+					try {
+						SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						SimpleDateFormat out = new SimpleDateFormat("dd-MM-yyyy");
+
+						java.util.Date date = in.parse(e.getDate_from());
+						java.util.Date date1 = in.parse(e.getDate_to());
+						result = out.format(date);
+						result1 = out.format(date1);
+					} catch (ParseException e1) {
+						
+						logger.error("exception occured",e1);
+						System.out.println("ERROR : "+ e1.getMessage());
+					}
+					System.out.format("%4s%26s%15s%20s%25s%15s%15s\n", e.getLeave_id(), e.getEmpId(), e.getLeave_bal(),
+							e.getNoofdays_App(), result, result1,e.getStatus());
+				}
+			} else {
+				System.out.println("No Leave Requests Found");
+			} 
 		
+		while(true) {
+			System.out.println("\n\t\t\t---------Enter Emp Id of Employee request you want to accept/reject----------");
+			System.out.println("Employee ID:");
+			emp.setEmpId(sc.next());
+			if(empServ.LeaveCheck(emp)==0)
+			{
+				System.out.println("The Leave with '"+emp.getEmpId()+"' is not found");
+				System.out.println("Enter correct Emp ID");
+			}
+			else if(empServ.LeaveEligibility(emp)==0)
+			{
+				System.out.println("\nSo,The Person with '"+emp.getEmpId()+"' is not eligible for Leave");
+				break;
+			}
+			else {
+				System.out.println("\nThe Person with '"+emp.getEmpId()+"' is eligible for Leave");
+				break;
+			}
+				
+				} 
+		
+		
+		
+			while(true) {
+				
+		System.out.println("---------Leave Approval----------");
+		System.out.println("1) Approve");
+		System.out.println("2) Reject");
+		System.out.println("Enter Your Choice:");
+		choice=sc.nextInt();
+		switch(choice)
+		{
+		case 1:
+			emp.setStatus("approved");
+			if(empServ.approveLeave(emp)) {
+				System.out.println("\nLeave approved successfully");
+				break;
+			}
+			break;
+		case 2:
+			emp.setStatus("rejected");
+			if(empServ.approveLeave(emp)) {
+				System.out.println("\nLeave rejected successfully");
+			}
+		
+	}
+		break;
+			}
+		}
+		catch (EmployeeException e) {
+			logger.error("exception occured",e);
+			System.out.println("ERROR : "+ e.getMessage());
+		}
 	}
 	/******End of Functionality of Manager*****************/
 	

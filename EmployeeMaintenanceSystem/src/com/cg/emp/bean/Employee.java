@@ -1,6 +1,6 @@
 package com.cg.emp.bean;
 
-public class Employee {
+public class Employee extends LeaveHistory{
 	
 	private String empId;
 	private String empFName;
@@ -17,7 +17,21 @@ public class Employee {
 	private String empContact;
 	private String empMgrId;
 	private Department dept_name;
+	private String empFullName;
+	LeaveHistory lh;
 	
+	public String getEmpFullName() {
+		return empFullName;
+	}
+	public void setEmpFullName(String empFullName) {
+		this.empFullName = empFullName;
+	}
+	public LeaveHistory getLh() {
+		return lh;
+	}
+	public void setLh(LeaveHistory lh) {
+		this.lh = lh;
+	}
 	public String getEmpId() {
 		return empId;
 	}
